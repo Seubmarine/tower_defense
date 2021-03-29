@@ -23,6 +23,12 @@ class Vector2:
         elif type(other) in (int, float):
             return Vector2(self.x * other, self.y * other)
 
+    def __mod__(self, other):
+        if type(other) == type(self):
+            return Vector2(self.x % other.x, self.y % other.y)
+        elif type(other) in (int, float):
+            return Vector2(self.x % other, self.y % other)
+
     def __truediv__(self, other):
         if type(other) == type(self):
             return Vector2(self.x / other.x, self.y / other.y)
@@ -35,6 +41,18 @@ class Vector2:
         elif type(other) in (int, float):
             return Vector2(self.x // other, self.y // other)
 
+    def __lt__(self, other):
+        if type(other) == type(self):
+            return self.x < other.x, self.y < other.y
+        elif type(other) in (int, float):
+            return self.x < other, self.y < other
+
+    def __le__(self, other):
+        if type(other) == type(self):
+            return self.x <= other.x, self.y <= other.y
+        elif type(other) in (int, float):
+            return self.x <= other, self.y <= other
+
     def __eq__(self, vector2):
         """Not equal will automaticly invert the result in python 3"""
         if self.x == vector2.x and self.y == vector2.y:
@@ -44,6 +62,18 @@ class Vector2:
 
     def __neg__(self):
         return Vector2(-self.x, -self.y)
+
+    def __gt__(self, other):
+        if type(other) == type(self):
+            return self.x > other.x, self.y > other.y
+        elif type(other) in (int, float):
+            return self.x > other, self.y > other
+
+    def __ge__(self, other):
+        if type(other) == type(self):
+            return self.x >= other.x, self.y >= other.y
+        elif type(other) in (int, float):
+            return self.x >= other, self.y >= other
 
     def replace(self, vector2):
         self.x = vector2.x
