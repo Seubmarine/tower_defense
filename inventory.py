@@ -22,9 +22,10 @@ class Selectable:
         return detect_collision(self.position, self.size, vector2_pos, vector2_size)
 
     def update(self):
-        if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON,0,0):
-            print(Vector2(pyxel.mouse_x, pyxel.mouse_y))
-            print(self.check_collision(Vector2(pyxel.mouse_x, pyxel.mouse_y), Vector2(0,0)))
+        pass
+        # if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON,0,0):
+        #     print(Vector2(pyxel.mouse_x, pyxel.mouse_y))
+        #     print(self.check_collision(Vector2(pyxel.mouse_x, pyxel.mouse_y), Vector2(0,0)))
             # print(detect_collision( self.position, self.size ))
 
     def draw(self):
@@ -32,19 +33,24 @@ class Selectable:
 
 class Item():
     def __init__(self, item_type):
+        self.no_sprite = [(0,0)]
         self.simple_arrow_sprite = [(8,0), (16,0), (24,0), (32,0)]
         self.double_arrow_sprite = [(40,0), (48,0), (56,0), (64,0),(72,0),(80,0)]
-        self.pusher_sprite = []
-        self.current_sprite_list = []
-        self.current_sprite = ()
-        self.tilemap_index = (self.current_sprite[0] / 8, self.current_sprite[0] / 8)
+        self.pusher_sprite = [0,8]
+        self.current_sprite_list = self.no_sprite
+        self.current_sprite = self.current_sprite_list[0]
         self.index = 0
         self.set_type(item_type)
 
     def get_sprite(self, index):
         self.index += index
         self.current_sprite = self.current_sprite_list[self.index % len(self.current_sprite_list)]
-        
+        self.tilemap_index = (self.current_sprite[0] / 8, self.current_sprite[0] / 8)
+    
+    def get_timemap_index(self):
+        self.tilemap_index = (self.current_sprite[0] / 8, self.current_sprite[0] / 8)
+        return self.tilemap_index
+
     def set_type(self, item_type):
         """Can be "simple_arrow", "double_arrow", "pusher" """
         self.type = item_type
@@ -89,6 +95,16 @@ class Inventory(Selectable):
             self.selected_item.set_type("double_arrow")
         elif pyxel.btnp(pyxel.KEY_2):
             self.selected_item.set_type("pusher")
+        if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON):
+            # print(pyxel.tilemap(0).get())
+            # pyxel.tilemap(0).set(pyxel.mouse_x//8, pyxel.mouse_y//8, 2)
+            # print(*self.selected_item.get_timemap_index(), pyxel.tilemap(0).get(0,0))
+            # test = self.selected_item.get_timemap_index()
+            test = (16,16)
+            print( pyxel.image(0).get(test[0], test[1]) )
+            print(pyxel.tilemap(0).refimg)
+            pyxel.tilemap(0).set( pyxel.mouse_x//8, pyxel.mouse_y//8, pyxel.image(0).get(test[0], test[1]) )
+            
         update_list(self.slot)
 
     def draw(self):
